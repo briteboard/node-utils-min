@@ -42,6 +42,9 @@ isEmpty(''); // true
 isEmpty(0); // false
 isEmpty([undefined]); // false (use pruneNil before)
 
+// prune only undefined
+prune({a: undefined, b: null, c: []}); // {b: null, c: []}
+
 pruneNil({a: undefined, b: null, c: 0, d: [], e: '', f: nan}); // {c: 0, d: [], e: ''}
 pruneNil([undefined, null, 0, [], '', nan]); // [0, [], '']
 
