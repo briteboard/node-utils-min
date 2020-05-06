@@ -15,6 +15,12 @@ export function isNil(obj: any): boolean {
 	return false;
 }
 
+export function isObject(obj: any): boolean {
+	return toString.call(obj) === TYPE_OBJECT;
+}
+
+
+
 //#endregion ---------- /isEmpty ----------
 
 
