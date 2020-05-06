@@ -1,12 +1,12 @@
 {
-  "name": "min-utils",
-  "version": "0.1.0",
+  "name": "utils-min",
+  "version": "0.1.1",
   "description": "Minimalistic utilities for modern ES with TypeScript",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/briteboard/node-min-utils.git"
+    "url": "https://github.com/briteboard/node-utils-min.git"
   },
   "scripts": {
     "test": "TS_NODE_FILES=true ./node_modules/.bin/mocha -p ./test/tsconfig.json ./test/spec/*.spec.ts",

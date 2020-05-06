@@ -11,7 +11,7 @@ Minimalistic utilities for modern ES / TypeScript coding (assume es2018 and abov
 
 
 ```sh
-npm install min-utils
+npm install utils-min
 ```
 
 ## Overview
