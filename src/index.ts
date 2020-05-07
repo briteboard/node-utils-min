@@ -185,6 +185,6 @@ export function omit<T extends object, K extends Extract<keyof T, string>>(obj: 
 export async function wait(ms: number) {
 	return new Promise(function (resolve) {
 		setTimeout(() => { resolve(); }, ms);
-	})
+	});
 }
 //#endregion ---------- /wait ----------

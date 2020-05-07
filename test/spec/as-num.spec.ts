@@ -13,11 +13,11 @@ describe('as-num', async function () {
 		equal(asNum(null), null);
 	});
 
-	it('as-num-empty-num', async () => {
+	it('as-num-num', async () => {
 		equal(asNum(12), 12);
 	});
 
-	it('as-num-empty-nan', async () => {
+	it('as-num-nan', async () => {
 		equal(asNum(nan), null);
 	});
 

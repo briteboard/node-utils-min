@@ -33,8 +33,6 @@ describe('is-empty', async function () {
 	it('is-empty-string', async () => {
 		equal(isEmpty(''), true);
 		equal(isEmpty('a'), false);
-		equal(isEmpty('\t'), false);
-		equal(isEmpty('\n'), false);
 	});
 
 	it('is-empty-object', async () => {
