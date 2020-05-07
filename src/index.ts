@@ -30,9 +30,17 @@ export function isEmpty(obj: any): boolean {
 	if (obj == null) return true;
 	const type = toString.call(obj);
 
-	if ((obj instanceof Array || type === TYPE_STRING) && obj.length === 0) return true;
+	if (type === TYPE_ARRAY) {
+		return (obj.length === 0);
+	}
 
-	if (type === TYPE_OBJECT) {
+	else if (type === TYPE_STRING) {
+		if (obj.length === 0) return true;
+		// needs to do the trim now
+		return (obj.trim().length === 0);
+	}
+
+	else if (type === TYPE_OBJECT) {
 		for (var prop in obj) {
 			if (obj.hasOwnProperty(prop)) return false;
 		}

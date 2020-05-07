@@ -49,6 +49,7 @@ isEmpty(nan); // true
 isEmpty([]); // true
 isEmpty({}): // true
 isEmpty(''); // true
+isEmpty('\n\t  \r'); // true (whitespaces count as empty)
 isEmpty(0); // false
 isEmpty([undefined]); // false (use pruneNil before)
 

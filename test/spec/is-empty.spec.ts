@@ -35,6 +35,12 @@ describe('is-empty', async function () {
 		equal(isEmpty('a'), false);
 	});
 
+	it('is-empty-string-whitespace', async () => {
+		equal(isEmpty('\n\t  \r'), true);
+		equal(isEmpty('\n\t - \r'), false);
+	});
+
+
 	it('is-empty-object', async () => {
 		equal(isEmpty({}), true);
 		equal(isEmpty({ a: undefined }), false);
