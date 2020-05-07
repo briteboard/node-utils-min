@@ -23,4 +23,11 @@ describe('prune-undefined', async function () {
 		equal(prune([undefined, 123, null, nan]), [123, null, nan]);
 	});
 
+	it('prune-undefined-additional', async () => {
+		equal(prune([0, 1, null], 0), [1, null]);
+		equal(prune({ a: 0, b: 1, c: null }, 0), { b: 1, c: null });
+		equal(prune({ a: undefined, b: 123, c: [], d: null, e: nan }, 123), { c: [], d: null, e: nan });
+	});
+
+
 });

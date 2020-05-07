@@ -21,4 +21,10 @@ describe('prune-empty', async function () {
 		equal(pruneEmpty([undefined, null, nan, 0, [], '']), [0]);
 	});
 
+	it('prune-empty-additional', async () => {
+		equal(pruneEmpty([undefined, null, nan, 0, [], ''], 0), []);
+		equal(pruneEmpty({ a: undefined, b: null, c: nan, d: 0, e: [], f: '' }, 0), {});
+	});
+
+
 });

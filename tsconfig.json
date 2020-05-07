@@ -4,7 +4,7 @@
 
  {
 	"compilerOptions": {
-		// ES2019 for modern browsers and nodejs (ES2020 for null coallescing but fully adopted in Safari)
+		// ES2019 for modern browsers and nodejs 12+ (ES2020 for null coallescing but not fully adopted in Safari usage)
 		"target": "ES2019",
 
 		// For now, we keep the traditional commonsjs way

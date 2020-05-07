@@ -1,5 +1,5 @@
 
-Minimalistic utilities for modern ES / TypeScript coding (assume es2018 and above)
+Minimalistic utilities for modern ES / TypeScript coding (assumes es2018 and above)
 
 - Designed for nodejs 12+ & modern browsers (post IE era)
 - Zero dependencies
@@ -17,7 +17,6 @@ Roadmap:
 - `asArr(val | vals[])` return [val] if val, or vals[] if already array. null/undefined passthrough.
 - `split(string, delim?)` Split (default ','), trim, and filter out empty strings.
 - (only if requested) `deepPrune...` `deepOmit`
-
 
 
 ```sh
@@ -54,15 +53,18 @@ isEmpty(0); // false
 isEmpty([undefined]); // false (use pruneNil before)
 
 // prune: prune only undefined
-prune({a: undefined, b: 123, c: [], d: null, c: nan}); // {b: 123, c: [], d: null, c: nan}
+prune({a: undefined, b: 123, c: [], d: null, e: nan}); // {b: 123, c: [], d: null, c: nan}
+prune({ a: undefined, b: 123, c: [], d: null, e: nan }, 123); // { e: [], f: '' } (with additional exclude 123)
 
 // pruneNil: prune undefined, null, and NaN
 pruneNil({a: undefined, b: null, c: 0, d: [], e: '', f: nan}); // {c: 0, d: [], e: ''}
 pruneNil([undefined, null, 0, [], '', nan]); // [0, [], '']
+pruneNil([undefined, null, 0, 1, 2, nan], 0, 1); // [2]  (additional dxcludes 0 and 1)
 
 // pruneEmpty: prune undefined, null, and NaN, '', []
 pruneEmpty({a: undefined, b: null, c: 0, d: [], e: ''}); // {c: 0}
 pruneEmpty([undefined, null, 0, [], '']); // [0]
+pruneEmpty([undefined, null, 123, [], ''], 123); // [] (additional exclude 123)
 
 // omit: return new object without some of properties (returned type Omit<T, K extends Extract<keyof T, string>>)
 omit({a: 1, b: 'BBB', c: 'CCC'}, 'b', 'c'); // {a: 1}
@@ -81,9 +83,7 @@ asNum(null); // null
 asNum(undefined); // null
 
 await wait(1000); // resolve in 1000 ms
-
 ```
-
 
 
 ### Thanks to

@@ -64,23 +64,23 @@ type NonNull = string | number | boolean | symbol | bigint | object;
  * 
  * @param obj 
  */
-export function pruneEmpty<T extends object | null | undefined>(obj: T): T extends object ? Partial<T> : T;
-export function pruneEmpty<T extends any[]>(obj: T): NonNull[];
-export function pruneEmpty<T extends undefined | null | object | Array<any>>(obj: T, excludeVals?: (number | string | boolean)[]): Partial<T> | NonNull[] | null | undefined {
-	return _prune(obj, isEmpty, excludeVals);
+export function pruneEmpty<T extends object | null | undefined>(obj: T, ...additionalExcludes: (number | string | boolean)[]): T extends object ? Partial<T> : T;
+export function pruneEmpty<T extends any[]>(obj: T, ...additionalExcludes: (number | string | boolean)[]): NonNull[];
+export function pruneEmpty<T extends undefined | null | object | Array<any>>(obj: T, ...additionalExcludes: (number | string | boolean)[]): Partial<T> | NonNull[] | null | undefined {
+	return _prune(obj, isEmpty, additionalExcludes);
 }
 
-export function pruneNil<T extends object | null | undefined>(obj: T): T extends object ? Partial<T> : T;
-export function pruneNil<T extends any[]>(obj: T): NonNull[];
-export function pruneNil<T extends object | Array<any>>(obj: T, excludeVals?: (number | string | boolean)[]): Partial<T> | NonNull[] | null | undefined {
-	return _prune(obj, isNil, excludeVals);
+export function pruneNil<T extends object | null | undefined>(obj: T, ...additionalExcludes: (number | string | boolean)[]): T extends object ? Partial<T> : T;
+export function pruneNil<T extends any[]>(obj: T, ...additionalExcludes: (number | string | boolean)[]): NonNull[];
+export function pruneNil<T extends object | Array<any>>(obj: T, ...additionalExcludes: (number | string | boolean)[]): Partial<T> | NonNull[] | null | undefined {
+	return _prune(obj, isNil, additionalExcludes);
 }
 
 const isUndefined = (v: any) => v === undefined;
-export function prune<T extends object | null | undefined>(obj: T): T extends object ? Partial<T> : T;
-export function prune<T extends any[]>(obj: T): NonNull[];
-export function prune<T extends object | Array<any>>(obj: T, excludeVals?: (number | string | boolean)[]): Partial<T> | NonNull[] | null | undefined {
-	return _prune(obj, isUndefined, excludeVals);
+export function prune<T extends object | null | undefined>(obj: T, ...additionalExcludes: (number | string | boolean)[]): T extends object ? Partial<T> : T;
+export function prune<T extends any[]>(obj: T, ...additionalExcludes: (number | string | boolean)[]): NonNull[];
+export function prune<T extends object | Array<any>>(obj: T, ...additionalExcludes: (number | string | boolean)[]): Partial<T> | NonNull[] | null | undefined {
+	return _prune(obj, isUndefined, additionalExcludes);
 }
 
 function _prune<T extends undefined | null | object | Array<any>>(obj: T, is: (v: any) => boolean, excludeVals?: (number | string | boolean)[]): Partial<T> | NonNull[] | null | undefined {
