@@ -68,6 +68,12 @@ export function pruneNil<T extends object | Array<any>>(obj: T, excludeVals?: (n
 	return _prune(obj, isNil, excludeVals);
 }
 
+const isUndefined = (v: any) => v === undefined;
+export function prune<T extends object | null | undefined>(obj: T): T extends object ? Partial<T> : T;
+export function prune<T extends any[]>(obj: T): NonNull[];
+export function prune<T extends object | Array<any>>(obj: T, excludeVals?: (number | string | boolean)[]): Partial<T> | NonNull[] | null | undefined {
+	return _prune(obj, isUndefined, excludeVals);
+}
 
 function _prune<T extends undefined | null | object | Array<any>>(obj: T, is: (v: any) => boolean, excludeVals?: (number | string | boolean)[]): Partial<T> | NonNull[] | null | undefined {
 	if (obj == null) return obj;
@@ -155,6 +161,25 @@ function _asNum(str: string | null | undefined, alt: number | null): number | nu
 }
 //#endregion ---------- /asNum ----------
 
+//#region    ---------- omit ---------- 
+// 
+/**
+ * Thanks to: https://stackoverflow.com/a/53968837
+ * For now, loosen up internal typing (i.e. ret: any, excludeSet Set<string>)
+ */
+export function omit<T extends object, K extends Extract<keyof T, string>>(obj: T, ...keys: K[]): Omit<T, K> {
+	let ret: any = {};
+	const excludeSet: Set<string> = new Set(keys);
+	// TS-NOTE: Set<K> makes the obj[key] type check fail, so, loosen up typing here.
+
+	for (let key in obj) {
+		if (!excludeSet.has(key)) {
+			ret[key] = obj[key];
+		}
+	}
+	return ret;
+}
+//#endregion ---------- /omit ---------- 
 
 //#region    ---------- wait ---------- 
 export async function wait(ms: number) {

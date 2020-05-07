@@ -3,11 +3,11 @@ Minimalistic utilities for modern ES / TypeScript coding (assume es2018 and abov
 
 - Designed for nodejs 12+ & modern browsers (post IE era)
 - Zero dependencies
-- Typescript
+- Typed (i.e., TypeScript )
 - Only handle primitive types, object, and array (for now does not handle Map / Set handling)
 - `Nil` for `null | undefined | NaN`
-- `prune...` removes by value
-- `omit` removes by name
+- `prune`, `pruneNil`, `pruneEmpty` removes by value (new object returned, direct properties)
+- `omit` removes by name (new object returned, direct properties)
 
 
 ```sh
@@ -43,16 +43,19 @@ isEmpty(0); // false
 isEmpty([undefined]); // false (use pruneNil before)
 
 // prune only undefined
-prune({a: undefined, b: null, c: []}); // {b: null, c: []}
+prune({a: undefined, b: 123, c: [], d: null, c: nan}); // {b: 123, c: [], d: null, c: nan}
 
+// prune undefined, null, and NaN
 pruneNil({a: undefined, b: null, c: 0, d: [], e: '', f: nan}); // {c: 0, d: [], e: ''}
 pruneNil([undefined, null, 0, [], '', nan]); // [0, [], '']
 
+// prune undefined, null, and NaN, '', []
 pruneEmpty({a: undefined, b: null, c: 0, d: [], e: ''}); // {c: 0}
 pruneEmpty([undefined, null, 0, [], '']); // [0]
 
-
-// omit({a: 1, b: 2}, ['a']); // {b: 2} (NOT IMPLEMENTED YET)
+// new object without some of properties
+omit({a: 1, b: 'BBB', c: 'CCC'}, 'b', 'c'); // {a: 1}
+omit({a: 1, b: 'BBB', c: 'CCC', d: null, e: undefined}, 'b', 'c'); // {a: 1, d: null, e: undefined}
 
 asNum('12.5'); // 12.5
 asNum('12a'); // null
