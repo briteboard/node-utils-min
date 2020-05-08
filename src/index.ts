@@ -110,14 +110,13 @@ function _prune<T extends undefined | null | object | Array<any>>(obj: T, is: (v
 
 
 //#region    ---------- asNum ---------- 
-type NumOrNull = number | null;
 type MaybeNumStr = (string | number | null | undefined);
 
-export function asNum<T extends MaybeNumStr, A extends number | undefined>(val: T, or_else?: A): A extends number ? number : T extends null | undefined ? null : NumOrNull;
-export function asNum<T extends MaybeNumStr[], A extends number | undefined>(vals: T, or_else?: A): A extends number ? number[] : NumOrNull[];
-export function asNum<T extends MaybeNumStr[][], A extends number | undefined>(vals: T, or_else?: A): A extends number ? number[][] : NumOrNull[][];
+export function asNum<T extends MaybeNumStr, A extends number | undefined>(val: T, or_else?: A): A extends number ? number : T extends null | undefined ? null : (number | null);
+export function asNum<T extends MaybeNumStr[], A extends number | undefined>(vals: T, or_else?: A): A extends number ? number[] : (number | null)[];
+export function asNum<T extends MaybeNumStr[][], A extends number | undefined>(vals: T, or_else?: A): A extends number ? number[][] : (number | null)[][];
 
-export function asNum(val: MaybeNumStr[][] | MaybeNumStr[] | MaybeNumStr, alt?: number): NumOrNull[][] | NumOrNull[] | NumOrNull {
+export function asNum(val: MaybeNumStr[][] | MaybeNumStr[] | MaybeNumStr, alt?: number): (number | null)[][] | (number | null)[] | (number | null) {
 	const _alt = (alt != null) ? alt : null;
 	const type = toString.call(val);
 
