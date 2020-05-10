@@ -4,10 +4,11 @@ Minimalistic utilities for modern ES / TypeScript coding (assumes es2018 and abo
 - Designed for nodejs 12+ & modern browsers (post IE era)
 - Zero dependencies
 - Typed (i.e., TypeScript )
-- Only handle primitive types, object, and array (for now does not handle Map / Set)
+- Only handle primitive types, object, and array (for now it does not handle Map / Set)
 - `Nil` for `null | undefined | NaN`
-- `prune`, `pruneNil`, `pruneEmpty` removes by value (new object returned, direct properties only)
-- `omit` removes by property name (new object returned, direct properties only)
+- `prune`, `pruneNil`, `pruneEmpty` removes properties by value (new object returned, direct properties only)
+- `omit` removes properties by name (new object returned, direct properties only)
+- `split(string, delim?)` Split (default ','), trim items and filter out empty ones.
 
 
 Roadmap: 
@@ -15,7 +16,6 @@ Roadmap:
 - `pick(obj, ...props)` Create a new object by with specified property name
 - `asBool(val | vals[])` Returns true: 'true' | >0, false: 'false' | <=0 | null | undefined | NaN
 - `asArr(val | vals[])` return [val] if val, or vals[] if already array. null/undefined passthrough.
-- `split(string, delim?)` Split (default ','), trim, and filter out empty strings.
 - (only if requested) `deepPrune...` `deepOmit`
 
 
@@ -69,6 +69,11 @@ pruneEmpty([undefined, null, 123, [], ''], 123); // [] (additional exclude 123)
 // omit: return new object without some of properties (returned type Omit<T, K extends Extract<keyof T, string>>)
 omit({a: 1, b: 'BBB', c: 'CCC'}, 'b', 'c'); // {a: 1}
 omit({a: 1, b: 'BBB', c: 'CCC', d: null, e: undefined}, 'b', 'c'); // {a: 1, d: null, e: undefined}
+
+// split: split, trim, and remove empty items
+split('1 ,2, 3'); // ['1', '2', '3']
+split('1 ,2,, \t,\n 3,,'); // ['1', '2', '3']
+split('1 ;2, 3', ';'); // ['1', '2, 3']
 
 // asNum: use Number to parse, but return null for empty strings and support array.
 asNum('12.5'); // 12.5

@@ -60,9 +60,7 @@ export function isEmpty(obj: any): boolean {
 type NonNull = string | number | boolean | symbol | bigint | object;
 
 /**
- * Prune first level properties for empty value (null, undefined, empty array, empty string), and with an additional exclude value list
- * 
- * @param obj 
+ * Prune by value (if value isEmpty)
  */
 export function pruneEmpty<T extends object | null | undefined>(obj: T, ...additionalExcludes: (number | string | boolean)[]): T extends object ? Partial<T> : T;
 export function pruneEmpty<T extends any[]>(obj: T, ...additionalExcludes: (number | string | boolean)[]): NonNull[];
@@ -70,6 +68,9 @@ export function pruneEmpty<T extends undefined | null | object | Array<any>>(obj
 	return _prune(obj, isEmpty, additionalExcludes);
 }
 
+/**
+ * Prune by value (if value isNil i.e., undefined | null | NaN)
+ */
 export function pruneNil<T extends object | null | undefined>(obj: T, ...additionalExcludes: (number | string | boolean)[]): T extends object ? Partial<T> : T;
 export function pruneNil<T extends any[]>(obj: T, ...additionalExcludes: (number | string | boolean)[]): NonNull[];
 export function pruneNil<T extends object | Array<any>>(obj: T, ...additionalExcludes: (number | string | boolean)[]): Partial<T> | NonNull[] | null | undefined {
@@ -77,6 +78,9 @@ export function pruneNil<T extends object | Array<any>>(obj: T, ...additionalExc
 }
 
 const isUndefined = (v: any) => v === undefined;
+/**
+ * Prune by value (if value undefined and only undefined)
+ */
 export function prune<T extends object | null | undefined>(obj: T, ...additionalExcludes: (number | string | boolean)[]): T extends object ? Partial<T> : T;
 export function prune<T extends any[]>(obj: T, ...additionalExcludes: (number | string | boolean)[]): NonNull[];
 export function prune<T extends object | Array<any>>(obj: T, ...additionalExcludes: (number | string | boolean)[]): Partial<T> | NonNull[] | null | undefined {
@@ -171,6 +175,7 @@ function _asNum(str: string | null | undefined, alt: number | null): number | nu
 //#region    ---------- omit ---------- 
 // 
 /**
+ * Omit properties by name.
  * Thanks to: https://stackoverflow.com/a/53968837
  * For now, loosen up internal typing (i.e. ret: any, excludeSet Set<string>)
  */
@@ -187,6 +192,26 @@ export function omit<T extends object, K extends Extract<keyof T, string>>(obj: 
 	return ret;
 }
 //#endregion ---------- /omit ---------- 
+
+
+//#region    ---------- split ---------- 
+/**
+ * Split a string, trim, and prune empty strings. 
+ * @param str 
+ * @param delim 
+ */
+export function split<T extends string | undefined | null>(str?: T, delim?: string): T extends string ? string[] : T;
+export function split<T extends string | undefined | null>(str: T, delim = ','): string[] | T {
+	if (str == null) return str;
+	const r: string[] = [];
+	const strs = str.split(delim);
+	for (let v of strs) {
+		v = v.trim();
+		if (v.length > 0) r.push(v);
+	}
+	return r;
+}
+//#endregion ---------- /split ---------- 
 
 //#region    ---------- wait ---------- 
 export async function wait(ms: number) {
