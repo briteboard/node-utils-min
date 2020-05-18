@@ -29,5 +29,14 @@ describe('prune-undefined', async function () {
 		equal(prune({ a: undefined, b: 123, c: [], d: null, e: nan }, 123), { c: [], d: null, e: nan });
 	});
 
+	it('prune-undefined-type', async () => {
+		// Just to test the
+		type Data = { a: string, b: number, c?: number };
+
+		const d: Data = { a: 'a', b: 1, c: undefined };
+		// prune shuld be type idempotent;
+		const r: Data = prune(d);
+	});
+
 
 });

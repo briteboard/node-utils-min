@@ -81,9 +81,10 @@ const isUndefined = (v: any) => v === undefined;
 /**
  * Prune by value (if value undefined and only undefined)
  */
+export function prune<T extends object | null | undefined>(obj: T): T;
 export function prune<T extends object | null | undefined>(obj: T, ...additionalExcludes: (number | string | boolean)[]): T extends object ? Partial<T> : T;
-export function prune<T extends any[]>(obj: T, ...additionalExcludes: (number | string | boolean)[]): NonNull[];
-export function prune<T extends object | Array<any>>(obj: T, ...additionalExcludes: (number | string | boolean)[]): Partial<T> | NonNull[] | null | undefined {
+export function prune<T extends any[]>(obj: T, ...additionalExcludes: (number | string | boolean)[]): any[];
+export function prune<T extends object | Array<any>>(obj: T, ...additionalExcludes: (number | string | boolean)[]): T | Partial<T> | NonNull[] | null | undefined {
 	return _prune(obj, isUndefined, additionalExcludes);
 }
 
