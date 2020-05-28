@@ -221,3 +221,63 @@ export async function wait(ms: number) {
 	});
 }
 //#endregion ---------- /wait ----------
+
+//#region    ---------- uuid ---------- 
+const BASE_58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'; // Bitcoin base58
+const BASE_16 = '0123456789abcdef';
+
+/**
+ * B58 (bitcoin alphabet) encode a UUID. 
+ * from: b455d83b-a89e-4e40-b50a-876f6363c79d
+ * to:   PGaVHxohT51pMVaYme2Qd2
+ * (base on any-base code)
+ * 
+ * @param uuid 
+ */
+export function shortUuid(uuid: string): string {
+	const uuidStr = uuid.replace(/-/g, '');
+	return encode(BASE_16, BASE_58, uuidStr);
+}
+
+export function toUuid(b58: string): string {
+	const str = encode(BASE_58, BASE_16, b58).padStart(32, '0');
+	return `${str.substring(0, 8)}-${str.substring(8, 12)}-${str.substring(12, 16)}-${str.substring(16, 20)}-${str.substring(20, 32)}`;
+}
+
+/**
+ * 
+ * Code mostly from https://github.com/HarasimowiczKamil/any-base#readme
+ */
+function encode(srcAlphabet: string, dstAlphabet: string, str: string) {
+	const numberMap: number[] = []; // can be array here (was {} in any-base, perhaps for perf? to test ?)
+	const fromBase = srcAlphabet.length;
+	const toBase = dstAlphabet.length;
+
+	let i, divide: number, newlen, length = str.length, result = '';
+
+	if (srcAlphabet === dstAlphabet) {
+		return str;
+	}
+
+	for (i = 0; i < length; i++) {
+		numberMap[i] = srcAlphabet.indexOf(str[i]);
+	}
+	do {
+		divide = 0;
+		newlen = 0;
+		for (i = 0; i < length; i++) {
+			divide = divide * fromBase + numberMap[i];
+			if (divide >= toBase) {
+				numberMap[newlen++] = parseInt('' + (divide / toBase), 10);
+				divide = divide % toBase;
+			} else if (newlen > 0) {
+				numberMap[newlen++] = 0;
+			}
+		}
+		length = newlen;
+		result = dstAlphabet.slice(divide, divide + 1).concat(result);
+	} while (newlen !== 0);
+
+	return result;
+};
+//#endregion ---------- /uuid ----------
