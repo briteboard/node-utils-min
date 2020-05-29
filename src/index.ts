@@ -46,6 +46,9 @@ export function isEmpty(obj: any): boolean {
 	return false;
 }
 
+export function isString(val: any): val is string {
+	return toType.call(val) === TYPE_STRING;
+}
 //#endregion ---------- /is... ----------
 
 

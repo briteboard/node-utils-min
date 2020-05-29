@@ -55,6 +55,14 @@ isEmpty('\n\t  \r'); // true (whitespaces count as empty)
 isEmpty(0); // false
 isEmpty([undefined]); // false (use pruneNil before)
 
+// isString (will also so the "val is string" if returns true)
+isString('hello'); // true 
+isString({some: 'text'}); // false 
+isString(123); // false 
+isString(['hello']); // false 
+isString(null); // false
+isString(undefined); // false 
+
 // prune: prune only undefined
 prune({a: undefined, b: 123, c: [], d: null, e: nan}); // {b: 123, c: [], d: null, c: nan}
 prune({ a: undefined, b: 123, c: [], d: null, e: nan }, 123); // { e: [], f: '' } (with additional exclude 123)
