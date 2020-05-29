@@ -9,13 +9,14 @@ Minimalistic utilities for modern ES / TypeScript coding (assumes es2018 and abo
 - `prune`, `pruneNil`, `pruneEmpty` removes properties by value (new object returned, direct properties only)
 - `omit` removes properties by name (new object returned, direct properties only)
 - `split(string, delim?)` Split (default ','), trim items and filter out empty ones.
+- `asArr(val | vals[])` return [val] if val, or vals[] if already array. null/undefined passthrough.
 
 
 Roadmap: 
-
-- `pick(obj, ...props)` Create a new object by with specified property name
+- `pruneIn(obj), pruneNullIn(obj), ...` Prune in place (obj). No clone of object. 
+- `omitIn(obj, ...props)` Omit in place.
 - `asBool(val | vals[])` Returns true: 'true' | >0, false: 'false' | <=0 | null | undefined | NaN
-- `asArr(val | vals[])` return [val] if val, or vals[] if already array. null/undefined passthrough.
+- `pick(obj, ...props)` Create a new object by with specified property name
 - (only if requested) `deepPrune...` `deepOmit`
 
 
@@ -33,6 +34,8 @@ isObject({}); // true
 isObject(1);  // false
 isObject([]); // false
 isObject(nan); // false
+isObject(null); // false
+isObject(undefined); // false
 
 // isNil: 'Nil' means 'null | undefined | NaN'
 isNil(null); // true
@@ -86,6 +89,15 @@ asNum(''); // null
 asNum(['', '   ']); // [null, null]
 asNum(null); // null
 asNum(undefined); // null
+
+// asArray: wrap argument into an array if not already an array. Returns correct TS type.
+asArray(1); // [1]
+asArray([1, 2, 3]); // [1, 2, 3] (same array)
+asArray(['one', 2]); // ['one', 2] (same array)
+asArray({some:'text'}); // [{some: 'text'}]
+asArray(null); // null
+asArray(undefined); // undefined
+
 
 await wait(1000); // resolve in 1000 ms
 ```

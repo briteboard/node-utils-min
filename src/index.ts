@@ -5,10 +5,10 @@ const TYPE_NUMBER = '[object Number]';
 const TYPE_BOOLEAN = '[object Boolean]';
 const TYPE_OBJECT = '[object Object]';
 const TYPE_ARRAY = '[object Array]';
-const toString = Object.prototype.toString;
+const toType = Object.prototype.toString;
 //#endregion ---------- /Helpers ---------- 
 
-//#region    ---------- isEmpty ---------- 
+//#region    ---------- is... ---------- 
 
 export function isNil(obj: any): boolean {
 	if (obj == null || Number.isNaN(obj)) return true;
@@ -16,19 +16,13 @@ export function isNil(obj: any): boolean {
 }
 
 export function isObject(obj: any): boolean {
-	return toString.call(obj) === TYPE_OBJECT;
+	return toType.call(obj) === TYPE_OBJECT;
 }
 
 
-
-//#endregion ---------- /isEmpty ----------
-
-
-//#region    ---------- isEmpty ---------- 
-
 export function isEmpty(obj: any): boolean {
 	if (obj == null) return true;
-	const type = toString.call(obj);
+	const type = toType.call(obj);
 
 	if (type === TYPE_ARRAY) {
 		return (obj.length === 0);
@@ -52,7 +46,7 @@ export function isEmpty(obj: any): boolean {
 	return false;
 }
 
-//#endregion ---------- /isEmpty ----------
+//#endregion ---------- /is... ----------
 
 
 
@@ -123,7 +117,7 @@ export function asNum<T extends MaybeNumStr[][], A extends number | undefined>(v
 
 export function asNum(val: MaybeNumStr[][] | MaybeNumStr[] | MaybeNumStr, alt?: number): (number | null)[][] | (number | null)[] | (number | null) {
 	const _alt = (alt != null) ? alt : null;
-	const type = toString.call(val);
+	const type = toType.call(val);
 
 	// take the string value of val if exist (preserve null or undefined)
 
@@ -172,6 +166,18 @@ function _asNum(str: string | null | undefined, alt: number | null): number | nu
 	return (!is_zero && is_number || is_zero && str.trim().length > 0) ? r : alt;
 }
 //#endregion ---------- /asNum ----------
+
+
+//#region    ---------- asArray ---------- 
+type AnyButArray = object | number | string | boolean;
+export function asArray<T extends Array<any> | undefined | null>(val: T): T;
+export function asArray<T extends AnyButArray | undefined | null>(val: T): T[];
+export function asArray<T>(a: T | Array<T> | null | undefined): T | Array<T> | null | undefined {
+	if (a == null) return a;
+	return (a instanceof Array) ? a : [a];
+}
+//#endregion ---------- /asArray ----------
+
 
 //#region    ---------- omit ---------- 
 // 
