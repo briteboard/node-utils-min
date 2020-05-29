@@ -1,22 +1,22 @@
 
 Minimalistic utilities for modern ES / TypeScript coding (assumes es2018 and above)
 
-- Designed for nodejs 12+ & modern browsers (post IE era)
+- Designed for MODERN JS ONLY, i.e. nodejs 12+ & modern browsers (post IE era)
 - Zero dependencies
-- Typed (i.e., TypeScript )
+- Carefully Typed (i.e., Built for and with TypeScript)
 - Only handle primitive types, object, and array (for now it does not handle Map / Set)
 - `Nil` for `null | undefined | NaN`
-- `prune`, `pruneNil`, `pruneEmpty` removes properties by value (new object returned, direct properties only)
-- `omit` removes properties by name (new object returned, direct properties only)
-- `split(string, delim?)` Split (default ','), trim items and filter out empty ones.
-- `asArr(val | vals[])` return [val] if val, or vals[] if already array. null/undefined passthrough.
+- `prune`, `pruneNil`, `pruneEmpty` Removes properties by value (new object returned, direct properties only)
+- `omit` Removes properties by name (new object returned, direct properties only)
+- `split(string, delim?)` Splits (default ','), trim items and filter out empty ones.
+- `asArr(val | vals[])` Returns [val] if val, or vals[] if already array. null/undefined passthrough.
 
 
 Roadmap: 
 - `pruneIn(obj), pruneNullIn(obj), ...` Prune in place (obj). No clone of object. 
 - `omitIn(obj, ...props)` Omit in place.
 - `asBool(val | vals[])` Returns true: 'true' | >0, false: 'false' | <=0 | null | undefined | NaN
-- `pick(obj, ...props)` Create a new object by with specified property name
+- `pick(obj, ...props)` Creates a new object by with specified property name
 - (only if requested) `deepPrune...` `deepOmit`
 
 
@@ -58,6 +58,10 @@ isEmpty([undefined]); // false (use pruneNil before)
 // prune: prune only undefined
 prune({a: undefined, b: 123, c: [], d: null, e: nan}); // {b: 123, c: [], d: null, c: nan}
 prune({ a: undefined, b: 123, c: [], d: null, e: nan }, 123); // { e: [], f: '' } (with additional exclude 123)
+prune([undefined,1]); // [1]
+prune([undefined]); // []
+prune(null); // null
+prune(undefined); // undefined
 
 // pruneNil: prune undefined, null, and NaN
 pruneNil({a: undefined, b: null, c: 0, d: [], e: '', f: nan}); // {c: 0, d: [], e: ''}
@@ -73,10 +77,10 @@ pruneEmpty([undefined, null, 123, [], ''], 123); // [] (additional exclude 123)
 omit({a: 1, b: 'BBB', c: 'CCC'}, 'b', 'c'); // {a: 1}
 omit({a: 1, b: 'BBB', c: 'CCC', d: null, e: undefined}, 'b', 'c'); // {a: 1, d: null, e: undefined}
 
-// split: split, trim, and remove empty items
+// split: split, trim, and remove empty items (default delim ',')
 split('1 ,2, 3'); // ['1', '2', '3']
 split('1 ,2,, \t,\n 3,,'); // ['1', '2', '3']
-split('1 ;2, 3', ';'); // ['1', '2, 3']
+split('1 ;2, 3', ';'); // ['1', '2, 3'] (with custom delim ;)
 
 // asNum: use Number to parse, but return null for empty strings and support array.
 asNum('12.5'); // 12.5
@@ -96,9 +100,9 @@ asArray(1); // [1]
 asArray([1, 2, 3]); // [1, 2, 3] (same array)
 asArray(['one', 2]); // ['one', 2] (same array)
 asArray({some:'text'}); // [{some: 'text'}]
+asArray([undefined]); // [undefined] (not transformation, use prune)
 asArray(null); // null
 asArray(undefined); // undefined
-
 
 await wait(1000); // resolve in 1000 ms
 ```
