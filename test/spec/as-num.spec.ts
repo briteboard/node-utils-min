@@ -6,7 +6,11 @@ const nan = parseInt('not-a-number');
 describe('as-num', async function () {
 
 	it('as-num-undefined', async () => {
-		equal(asNum(undefined), null);
+		equal(asNum(undefined), undefined);
+	});
+
+	it('as-num-undefined[]', async () => {
+		equal(asNum([undefined]), [null]);
 	});
 
 	it('as-num-null', async () => {

@@ -87,8 +87,9 @@ asNum(['12', 13, 'aa']); // [12, 13, null]
 asNum(['12', 13, 'aa'], -1); // [12, 13, -1]
 asNum(''); // null
 asNum(['', '   ']); // [null, null]
+asNum([undefined, undefined]); // [null, null]
 asNum(null); // null
-asNum(undefined); // null
+asNum(undefined); // undefined
 
 // asArray: wrap argument into an array if not already an array. Returns correct TS type.
 asArray(1); // [1]
