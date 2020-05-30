@@ -242,6 +242,18 @@ export function omit<T extends object, K extends Extract<keyof T, string>>(obj: 
 }
 //#endregion ---------- /omit ---------- 
 
+//#region    ---------- pick ---------- 
+export function pick<T extends object | null | undefined, K extends Extract<keyof T, string>>(obj: T, ...keys: K[]): Pick<T, K> {
+	if (obj == null) return obj;
+
+	let ret: any = {};
+	for (let key of keys) {
+		ret[key] = obj![key];
+	}
+	return ret;
+}
+//#endregion ---------- /pick ---------- 
+
 
 //#region    ---------- split ---------- 
 /**

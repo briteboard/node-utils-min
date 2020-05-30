@@ -1,26 +1,32 @@
 
 Minimalistic utilities for modern ES / TypeScript coding (assumes es2018 and above)
 
-- Designed for MODERN JS ONLY, i.e. nodejs 12+ & modern browsers (post IE era)
-- Zero dependencies
+Priorities: 
+
+- Designed for modern JS/ES/TS programing ONLY, i.e. nodejs 12+ & modern browsers (post IE era)
 - Carefully Typed (i.e., Built for and with TypeScript)
-- Only handle primitive types, object, and array (for now it does not handle Map / Set)
+- Zero dependencies
+
+
+Overview: 
+
 - `Nil` for `null | undefined | NaN`
 - `prune`, `pruneNil`, `pruneEmpty` Removes properties by value (new object returned, direct properties only)
-- `pruneIn` Removes properties with undefined in place (no clone)
 - `omit` Removes properties by name (new object returned, direct properties only)
+- `pick(obj, ...props)` Pick properties by name returns new object
+- `pruneIn` Removes properties with undefined in place (no clone)
 - `split(string, delim?)` Splits (default ','), trim items and filter out empty ones.
 - `asArr(val | vals[])` Returns [val] if val, or vals[] if already array. null/undefined passthrough.
+- `equal` fast strict and deep equal function for object, map, set, date, regex, and primitive types.
 - All functions are [nullipotent](https://en.wiktionary.org/wiki/nullipotent) argument wise, except for `pruneIn`.
-- All functions are null-passthrough, meaning if null or undefined is passed it returns null or undefined.
-  - null-passthrough is accordingly typed in TS with conditional typing so that if the input cannot be null/undefined, the return won't be.
+- All functions are null-passthrough, meaning if null or undefined is passed it returns the value passed.
+  - null-passthrough is accordingly typed in TS with conditional typing when needed.
+
 
 
 Roadmap: 
-- `pruneNilIn(obj), pruneNilIn(obj)` Prune in place (obj). No clone of object. 
 - `omitIn(obj, ...props)` Omit in place (not sure we need/want this one).
 - `asBool(val | vals[])` Returns true: 'true' | >0, false: 'false' | <=0 | null | undefined | NaN
-- `pick(obj, ...props)` Creates a new object by with specified property name
 - (only if requested) `deepPrune...` `deepOmit`
 
 
@@ -88,6 +94,9 @@ pruneEmpty([undefined, null, 123, [], ''], 123); // [] (additional exclude 123)
 // omit: return new object without some of properties (returned type Omit<T, K extends Extract<keyof T, string>>)
 omit({a: 1, b: 'BBB', c: 'CCC'}, 'b', 'c'); // {a: 1}
 omit({a: 1, b: 'BBB', c: 'CCC', d: null, e: undefined}, 'b', 'c'); // {a: 1, d: null, e: undefined}
+
+// pick: return new object 
+pick({a: 1, b: 'BBB', c: 'CCC'}, 'b', 'c'); // {b: 'BBB', c: 'CCC'}
 
 // split: split, trim, and remove empty items (default delim ',')
 split('1 ,2, 3'); // ['1', '2', '3']
