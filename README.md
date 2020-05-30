@@ -7,14 +7,18 @@ Minimalistic utilities for modern ES / TypeScript coding (assumes es2018 and abo
 - Only handle primitive types, object, and array (for now it does not handle Map / Set)
 - `Nil` for `null | undefined | NaN`
 - `prune`, `pruneNil`, `pruneEmpty` Removes properties by value (new object returned, direct properties only)
+- `pruneIn` Removes properties with undefined in place (no clone)
 - `omit` Removes properties by name (new object returned, direct properties only)
 - `split(string, delim?)` Splits (default ','), trim items and filter out empty ones.
 - `asArr(val | vals[])` Returns [val] if val, or vals[] if already array. null/undefined passthrough.
+- All functions are [nullipotent](https://en.wiktionary.org/wiki/nullipotent) argument wise, except for `pruneIn`.
+- All functions are null-passthrough, meaning if null or undefined is passed it returns null or undefined.
+  - null-passthrough is accordingly typed in TS with conditional typing so that if the input cannot be null/undefined, the return won't be.
 
 
 Roadmap: 
-- `pruneIn(obj), pruneNullIn(obj), ...` Prune in place (obj). No clone of object. 
-- `omitIn(obj, ...props)` Omit in place.
+- `pruneNilIn(obj), pruneNilIn(obj)` Prune in place (obj). No clone of object. 
+- `omitIn(obj, ...props)` Omit in place (not sure we need/want this one).
 - `asBool(val | vals[])` Returns true: 'true' | >0, false: 'false' | <=0 | null | undefined | NaN
 - `pick(obj, ...props)` Creates a new object by with specified property name
 - (only if requested) `deepPrune...` `deepOmit`
@@ -63,7 +67,7 @@ isString(['hello']); // false
 isString(null); // false
 isString(undefined); // false 
 
-// prune: prune only undefined
+// prune: prune properties with undefined (return new object)
 prune({a: undefined, b: 123, c: [], d: null, e: nan}); // {b: 123, c: [], d: null, c: nan}
 prune({ a: undefined, b: 123, c: [], d: null, e: nan }, 123); // { e: [], f: '' } (with additional exclude 123)
 prune([undefined,1]); // [1]
@@ -71,7 +75,7 @@ prune([undefined]); // []
 prune(null); // null
 prune(undefined); // undefined
 
-// pruneNil: prune undefined, null, and NaN
+// pruneNil: prune undefined, null, and NaN (return new object)
 pruneNil({a: undefined, b: null, c: 0, d: [], e: '', f: nan}); // {c: 0, d: [], e: ''}
 pruneNil([undefined, null, 0, [], '', nan]); // [0, [], '']
 pruneNil([undefined, null, 0, 1, 2, nan], 0, 1); // [2]  (additional dxcludes 0 and 1)
@@ -113,6 +117,17 @@ asArray(null); // null
 asArray(undefined); // undefined
 
 await wait(1000); // resolve in 1000 ms
+
+
+// pruneIn: prune properties with undefined value IN PLACE 
+// (not necessarely faster than the nillipotent prune() version, especially for object)
+const obj = {a: 1, b: undefined, c: null};
+pruneIn(obj); // change obj to {a:1, c: null} and returns it as well 
+// (slower than prune when some undefined values)
+
+const arr = [1, undefined, null];
+pruneIn(arr); // change arr to [1, null] and returns it 
+// (faster than prune for arrays)
 ```
 
 

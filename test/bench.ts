@@ -1,5 +1,5 @@
 import { performance, PerformanceObserver } from 'perf_hooks';
-import { asNum } from '../src';
+import { asNum, prune, pruneIn } from '../src';
 const summer = (accumulator: number, currentValue: number) => accumulator + currentValue;
 
 /**
@@ -26,7 +26,10 @@ const obs = new PerformanceObserver((list) => {
 });
 obs.observe({ entryTypes: ['function'] });
 
-const benchs = [warmUp, benchNumber, benchNumberPlus, benchNumberWithTrim, benchAsNum]
+// asNum benchs
+// const benchs = [warmUp, benchNumber, benchNumberPlus, benchNumberWithTrim, benchAsNum];
+
+const benchs = [warmUp, benchPruneInObjWithUndefined, benchPruneObjWithUndefined, benchPruneInObjWithoutUndefined, benchPruneObjWithoutUndefined, benchPruneInArr, benchPruneArr];
 
 const timed_benchs = benchs.map(bench => performance.timerify(bench))
 
@@ -42,8 +45,13 @@ function run() {
 
 	// print result
 	console.log(`Benchmark result with ${STEPS} steps of ${IT} iteration (time sum per function)`)
+	const entries = Object.entries(benchTimes);
+	const longest = entries.reduce((l, entry) => {
+		return (entry[0].length > l) ? entry[0].length : l;
+	}, 0);
+
 	for (const [name, times] of Object.entries(benchTimes)) {
-		console.log(`${name}: ${Math.round(times.reduce(summer, 0))}ms`);
+		console.log(`${name.padEnd(longest + 3, ' ')}: ${Math.round(times.reduce(summer, 0))}ms`);
 	}
 
 	obs.disconnect();
@@ -56,6 +64,63 @@ function warmUp() {
 	}
 }
 
+//#region    ---------- pruneIn ---------- 
+function benchPruneInObjWithUndefined() {
+	let r: any;
+
+	for (let i = 0; i < IT; i++) {
+		const obj = { a: i, b: undefined, c: null };
+		r = pruneIn(obj);
+	}
+}
+
+function benchPruneObjWithUndefined() {
+	let r: any;
+
+	for (let i = 0; i < IT; i++) {
+		const obj = { a: i, b: undefined, c: null };
+		r = prune(obj);
+	}
+}
+
+function benchPruneInObjWithoutUndefined() {
+	let r: any;
+
+	for (let i = 0; i < IT; i++) {
+		const obj = { a: i, b: 2, c: null };
+		r = pruneIn(obj);
+	}
+}
+
+function benchPruneObjWithoutUndefined() {
+	let r: any;
+
+	for (let i = 0; i < IT; i++) {
+		const obj = { a: i, b: 2, c: null };
+		r = prune(obj);
+	}
+}
+
+
+function benchPruneInArr() {
+	let r: any;
+
+	for (let i = 0; i < IT; i++) {
+		const arr = [i, undefined, null, 'one', 'two'];
+		r = pruneIn(arr);
+	}
+}
+
+function benchPruneArr() {
+	let r: any;
+
+	for (let i = 0; i < IT; i++) {
+		const arr = [i, undefined, null, 'one', 'two'];
+		r = prune(arr);
+	}
+}
+
+//#endregion ---------- /pruneIn ---------- 
 
 //#region    ---------- asNum ---------- 
 function benchAsNum() {

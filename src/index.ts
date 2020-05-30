@@ -109,6 +109,31 @@ function _prune<T extends undefined | null | object | Array<any>>(obj: T, is: (v
 }
 //#endregion ---------- /prune ----------
 
+//#region    ---------- pruneIn ---------- 
+export function pruneIn<T extends undefined | null | object | Array<any>>(obj: T): T {
+	if (obj == null) return obj;
+
+	if (obj instanceof Array) {
+		let i = obj.length;
+		while (i--) {
+			if (obj[i] === undefined) {
+				obj.splice(i, 1);
+			}
+		}
+	} else {
+		for (const k in obj) {
+			if (obj.hasOwnProperty(k)) {
+				const v = obj![k] as any;
+				if (v === undefined) {
+					delete obj![k];
+				}
+			}
+		}
+	}
+	return obj;
+}
+//#endregion ---------- /pruneIn ---------- 
+
 
 
 //#region    ---------- asNum ---------- 
