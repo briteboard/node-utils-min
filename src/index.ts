@@ -1,11 +1,16 @@
 
 //#region    ---------- Helpers ---------- 
-const TYPE_STRING = '[object String]';
-const TYPE_NUMBER = '[object Number]';
-const TYPE_BOOLEAN = '[object Boolean]';
-const TYPE_OBJECT = '[object Object]';
-const TYPE_ARRAY = '[object Array]';
-const toType = Object.prototype.toString;
+const TYPE_OFFSET = 8;
+const TYPE_STRING = 'String]'; // '[object String]'
+const TYPE_NUMBER = 'Number]'; // '[object Number]'
+const TYPE_BOOLEAN = 'Boolean]'; // '[object Boolean]'
+const TYPE_OBJECT = 'Object]'; // '[object Object]'
+const TYPE_REGEXP = 'RegExp]'; // '[object RegExp]'
+const TYPE_ARRAY = 'Array]'; // '[object Array]'
+const TYPE_DATE = 'Date]'; // '[object Date]
+const TYPE_MAP = 'Map]'; // '[object Map]'
+const TYPE_SET = 'Set]'; // '[object Set]'
+const toType = Object.prototype.toString; // to call as toType(obj).substring(TYPE_OFFSET)
 //#endregion ---------- /Helpers ---------- 
 
 //#region    ---------- is... ---------- 
@@ -16,13 +21,13 @@ export function isNil(obj: any): boolean {
 }
 
 export function isObject(obj: any): boolean {
-	return toType.call(obj) === TYPE_OBJECT;
+	return toType.call(obj).substring(TYPE_OFFSET) === TYPE_OBJECT;
 }
 
 
 export function isEmpty(obj: any): boolean {
 	if (obj == null) return true;
-	const type = toType.call(obj);
+	const type = toType.call(obj).substring(TYPE_OFFSET);
 
 	if (type === TYPE_ARRAY) {
 		return (obj.length === 0);
@@ -47,7 +52,7 @@ export function isEmpty(obj: any): boolean {
 }
 
 export function isString(val: any): val is string {
-	return toType.call(val) === TYPE_STRING;
+	return toType.call(val).substring(TYPE_OFFSET) === TYPE_STRING;
 }
 //#endregion ---------- /is... ----------
 
@@ -154,7 +159,7 @@ export function asNum(val: MaybeNumStr[][] | MaybeNumStr[] | MaybeNumStr, alt?: 
 	}
 
 	const _alt = (alt != null) ? alt : null;
-	const type = toType.call(val);
+	const type = toType.call(val).substring(TYPE_OFFSET);
 
 	// take the string value of val if exist (preserve null or undefined)
 
@@ -256,6 +261,86 @@ export function split<T extends string | undefined | null>(str: T, delim = ','):
 	return r;
 }
 //#endregion ---------- /split ---------- 
+
+
+//#region    ---------- equal ---------- 
+// inspired from: https://github.com/epoberezkin/fast-deep-equal/
+const hasOwnProp = Object.prototype.hasOwnProperty;
+
+export function equal(a: any, b: any) {
+	// take care of same ref, and boolean, and string match
+	if (a === b) return true;
+
+	const aType = toType.call(a).substring(TYPE_OFFSET);
+	const bType = toType.call(b).substring(TYPE_OFFSET);
+
+	if (aType !== bType) return false;
+
+	// array
+	if (aType === TYPE_ARRAY) {
+		let length = a.length;
+		if (length != b.length) return false;
+		for (let i = length; i-- !== 0;) {
+			if (!equal(a[i], b[i])) return false;
+		}
+		return true;
+	}
+
+	// date
+	if (aType === TYPE_DATE) {
+		return a.getTime() == b.getTime();
+	}
+
+	// regex
+	if (aType === TYPE_REGEXP) {
+		return a.toString() == b.toString();
+	}
+
+	// Map
+	if (aType === TYPE_MAP) {
+		if (a.size !== b.size) return false;
+		for (let i of a.entries())
+			if (!b.has(i[0])) return false;
+		for (let i of a.entries())
+			if (!equal(i[1], b.get(i[0]))) return false;
+		return true;
+	}
+
+	// Set
+	if (aType === TYPE_SET) {
+		if (a.size !== b.size) return false;
+		for (let i of a.entries())
+			if (!b.has(i[0])) return false;
+		return true;
+	}
+
+
+	// check object 
+	if (aType === TYPE_OBJECT) {
+		let aKeys = Object.keys(a);
+		let length = aKeys.length;
+
+		if (length !== Object.keys(b).length)
+			return false;
+
+		for (let i = length; i-- !== 0;)
+			if (!hasOwnProp.call(b, aKeys[i])) return false;
+
+		for (let i = length; i-- !== 0;) {
+			let key = aKeys[i];
+			if (!equal(a[key], b[key])) return false;
+		}
+		return true;
+	}
+
+
+	// (trick from https://github.com/epoberezkin/fast-deep-equal/, because if a NaN a !== a !!!)
+	// true if both NaN, false otherwise
+	return a !== a && b !== b;
+
+};
+//#endregion ---------- /equal ---------- 
+
 
 //#region    ---------- wait ---------- 
 export async function wait(ms: number) {

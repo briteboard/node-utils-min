@@ -116,10 +116,20 @@ asArray([undefined]); // [undefined] (not transformation, use prune)
 asArray(null); // null
 asArray(undefined); // undefined
 
+// equal: strict deep equal for array, object literals, Map, Set, Date, RegEx, and primtive types
+equal(1, 1); // true
+equal({a: 1, b: 2}, {b: 2, a: 1}); // true
+equal([1, 2], [1, 2]); // true
+equal([1, {two: 2}], [1, {two: 2}]); // true
+equal({a: 1, b: undefined}, {a: 1}); // false (use prune)
+equal([1, 2], [2, 1]); // false
+equal([1, 2], [1, 2, undefined]); // false (use prune)
+
+
 await wait(1000); // resolve in 1000 ms
 
 
-// pruneIn: prune properties with undefined value IN PLACE 
+// pruneIn: IN PLACE pruning of properties with undefined value 
 // (not necessarely faster than the nillipotent prune() version, especially for object)
 const obj = {a: 1, b: undefined, c: null};
 pruneIn(obj); // change obj to {a:1, c: null} and returns it as well 
