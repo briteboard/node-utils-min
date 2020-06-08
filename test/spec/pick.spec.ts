@@ -20,4 +20,13 @@ describe('pick', async function () {
 
 	});
 
+	it('pick-with-undefined', async () => {
+		const data: any = { a: 123 };
+		const p = pick(data, 'a', 'b');
+		equal(p, { a: 123 });
+
+	});
+
+
 });
+

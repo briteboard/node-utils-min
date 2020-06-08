@@ -248,7 +248,9 @@ export function pick<T extends object | null | undefined, K extends Extract<keyo
 
 	let ret: any = {};
 	for (let key of keys) {
-		ret[key] = obj![key];
+		if (obj.hasOwnProperty(key)) {
+			ret[key] = obj![key];
+		}
 	}
 	return ret;
 }
@@ -288,6 +290,24 @@ export function equal(a: any, b: any) {
 
 	if (aType !== bType) return false;
 
+	// check object 
+	if (aType === TYPE_OBJECT) {
+		let aKeys = Object.keys(a);
+		let length = aKeys.length;
+
+		if (length !== Object.keys(b).length)
+			return false;
+
+		for (let i = length; i-- !== 0;)
+			if (!hasOwnProp.call(b, aKeys[i])) return false;
+
+		for (let i = length; i-- !== 0;) {
+			let key = aKeys[i];
+			if (!equal(a[key], b[key])) return false;
+		}
+		return true;
+	}
+
 	// array
 	if (aType === TYPE_ARRAY) {
 		let length = a.length;
@@ -325,26 +345,6 @@ export function equal(a: any, b: any) {
 			if (!b.has(i[0])) return false;
 		return true;
 	}
-
-
-	// check object 
-	if (aType === TYPE_OBJECT) {
-		let aKeys = Object.keys(a);
-		let length = aKeys.length;
-
-		if (length !== Object.keys(b).length)
-			return false;
-
-		for (let i = length; i-- !== 0;)
-			if (!hasOwnProp.call(b, aKeys[i])) return false;
-
-		for (let i = length; i-- !== 0;) {
-			let key = aKeys[i];
-			if (!equal(a[key], b[key])) return false;
-		}
-		return true;
-	}
-
 
 	// (trick from https://github.com/epoberezkin/fast-deep-equal/, because if a NaN a !== a !!!)
 	// true if both NaN, false otherwise
