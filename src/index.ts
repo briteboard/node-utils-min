@@ -24,8 +24,12 @@ export function isObject(obj: any): boolean {
 	return toType.call(obj).substring(TYPE_OFFSET) === TYPE_OBJECT;
 }
 
+// allows to have type predicate
+export function isNotEmpty<T>(obj: T): obj is NonNullable<T> {
+	return !isEmpty(obj);
+}
 
-export function isEmpty(obj: any): boolean {
+export function isEmpty(obj: any) {
 	if (obj == null) return true;
 	const type = toType.call(obj).substring(TYPE_OFFSET);
 

@@ -65,6 +65,12 @@ isEmpty('\n\t  \r'); // true (whitespaces count as empty)
 isEmpty(0); // false
 isEmpty([undefined]); // false (use pruneNil before)
 
+// isNotEmpty (same opposite as above, but use)
+let arr: any[] | undefined | null = ...;
+if (isNotEmpty(arr)){
+  arr.length; // will be NonNullable<typeof arr>
+}
+
 // isString (will also so the "val is string" if returns true)
 isString('hello'); // true 
 isString({some: 'text'}); // false 
