@@ -215,9 +215,7 @@ function _asNum(str: string | null | undefined, alt: number | null): number | nu
 
 
 //#region    ---------- asArray ---------- 
-type AnyButArray = object | number | string | boolean;
-export function asArray<T extends Array<any> | undefined | null>(val: T): T;
-export function asArray<T extends AnyButArray | undefined | null>(val: T): T[];
+export function asArray<T>(a: T): T extends Array<infer E> ? E[] : T extends null | undefined ? T : T[];
 export function asArray<T>(a: T | Array<T> | null | undefined): T | Array<T> | null | undefined {
 	if (a == null) return a;
 	return (a instanceof Array) ? a : [a];

@@ -25,6 +25,12 @@ describe('as-array', async function () {
 		equal(v, [1, 2, 3]);
 	});
 
+	it('as-maybe-array', async () => {
+		const a = hello();
+		const v: string[] = asArray(a);
+		equal(v, ['hello']);
+	});
+
 	it('as-array-objs', async () => {
 		const v: { some: string }[] = asArray({ some: 'text' });
 		equal(v, [{ some: 'text' }]);
@@ -35,3 +41,8 @@ describe('as-array', async function () {
 		equal(v, [1, { some: 'text' }, 3]);
 	});
 });
+
+
+function hello(): string | string[] {
+	return 'hello';
+}
