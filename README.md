@@ -71,13 +71,21 @@ if (isNotEmpty(arr)){
   arr.length; // will be NonNullable<typeof arr>
 }
 
-// isString (will also so the "val is string" if returns true)
+// isString (will also typescript assert "val is string" if returns true)
 isString('hello'); // true 
 isString({some: 'text'}); // false 
 isString(123); // false 
 isString(['hello']); // false 
 isString(null); // false
 isString(undefined); // false 
+
+// isNum
+isNum(123); // true 
+isNum(-1); // true 
+isNum([123]); // false 
+isNum('123'); // false 
+isNum(null); // false
+isNum(undefined); // false 
 
 // prune: prune properties with undefined (return new object)
 prune({a: undefined, b: 123, c: [], d: null, e: nan}); // {b: 123, c: [], d: null, c: nan}

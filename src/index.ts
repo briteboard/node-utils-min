@@ -58,6 +58,15 @@ export function isEmpty(obj: any) {
 export function isString(val: any): val is string {
 	return toType.call(val).substring(TYPE_OFFSET) === TYPE_STRING;
 }
+
+export function isNum(val: any): val is number {
+	const type = toType.call(val).substring(TYPE_OFFSET);
+	return (type === TYPE_NUMBER && !Number.isNaN(val as number))
+}
+
+export function isBoolean(val: any): val is boolean {
+	return toType.call(val).substring(TYPE_OFFSET) === TYPE_BOOLEAN;
+}
 //#endregion ---------- /is... ----------
 
 
