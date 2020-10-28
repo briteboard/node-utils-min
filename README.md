@@ -148,8 +148,14 @@ equal({a: 1, b: undefined}, {a: 1}); // false (use prune)
 equal([1, 2], [2, 1]); // false
 equal([1, 2], [1, 2, undefined]); // false (use prune)
 
+// deepClone: simple object/array deep clone (prototype, map/set, out of scope)
+deepClone({a: 1, b: 'hello'}); // {a: 1, b: 'hello'}
+deepClone([1, {b: 'hello'}]); // [1, {b: 'hello'}]
+deepClone(null); // null
+deepClone('hello'); // 'hello'
 
-await wait(1000); // resolve in 1000 ms
+
+await wait(1000); // resolve in 1000 ms (wrap setTimeout as promise)
 
 
 // pruneIn: IN PLACE pruning of properties with undefined value 

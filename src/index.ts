@@ -49,7 +49,6 @@ export function isEmpty(obj: any) {
 		}
 		return true;
 	}
-
 	if (Number.isNaN(obj)) return true;
 
 	return false;
@@ -292,6 +291,7 @@ export function split<T extends string | undefined | null>(str: T, delim = ','):
 // inspired from: https://github.com/epoberezkin/fast-deep-equal/
 const hasOwnProp = Object.prototype.hasOwnProperty;
 
+/** Perform a deep equal check */
 export function equal(a: any, b: any) {
 	// take care of same ref, and boolean, and string match
 	if (a === b) return true;
@@ -363,6 +363,36 @@ export function equal(a: any, b: any) {
 
 };
 //#endregion ---------- /equal ---------- 
+
+//#region    ---------- deepClone ---------- 
+/**
+ * Simple deep clone function for cloning array and object. 
+ * For advanced cloning support, such as prototype, Map/Set, class support, see other cloning library from lodash, underscore, or deepMerge. 
+ * @param target Target value to be copied.
+ * @see source project, ts-deepcopy https://github.com/ykdr2017/ts-deepcopy
+ */
+export function deepClone<T>(target: T): T {
+	if (target == null) {
+		return target;
+	}
+	if (target instanceof Date) {
+		return new Date(target.getTime()) as any;
+	}
+	if (target instanceof Array) {
+		const cp = [] as any[];
+		(target as any[]).forEach((v) => { cp.push(v); });
+		return cp.map((n: any) => deepClone<any>(n)) as any;
+	}
+	if (typeof target === 'object' && target !== {}) {
+		const cp = { ...(target as { [key: string]: any }) } as { [key: string]: any };
+		Object.keys(cp).forEach(k => {
+			cp[k] = deepClone<any>(cp[k]);
+		});
+		return cp as T;
+	}
+	return target;
+};
+//#endregion ---------- /deepClone ---------- 
 
 
 //#region    ---------- wait ---------- 
