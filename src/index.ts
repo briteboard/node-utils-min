@@ -397,7 +397,7 @@ export function deepClone<T>(target: T): T {
 
 //#region    ---------- wait ---------- 
 export async function wait(ms: number) {
-	return new Promise(function (resolve) {
+	return new Promise<void>(function (resolve) {
 		setTimeout(() => { resolve(); }, ms);
 	});
 }
