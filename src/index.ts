@@ -404,8 +404,11 @@ export async function wait(ms: number) {
 //#endregion ---------- /wait ----------
 
 //#region    ---------- uuid ---------- 
-const BASE_58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'; // Bitcoin base58
-const BASE_16 = '0123456789abcdef';
+/** Bitcoin's tyle b58 alphabet */
+export const BASE_58_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'; // Bitcoin base58
+/** Lowercase base 16 / hex alphabet */
+export const BASE_16_ALPHABET = '0123456789abcdef';
+export const BASE_10_ALPHABET = '0123456789';
 
 /**
  * B58 (bitcoin alphabet) encode a UUID. 
@@ -417,12 +420,19 @@ const BASE_16 = '0123456789abcdef';
  */
 export function shortUuid(uuid: string): string {
 	const uuidStr = uuid.replace(/-/g, '');
-	return encode(BASE_16, BASE_58, uuidStr);
+	return encode(BASE_16_ALPHABET, BASE_58_ALPHABET, uuidStr);
 }
 
 export function toUuid(b58: string): string {
-	const str = encode(BASE_58, BASE_16, b58).padStart(32, '0');
+	const str = encode(BASE_58_ALPHABET, BASE_16_ALPHABET, b58).padStart(32, '0');
 	return `${str.substring(0, 8)}-${str.substring(8, 12)}-${str.substring(12, 16)}-${str.substring(16, 20)}-${str.substring(20, 32)}`;
+}
+
+/** Create an encode fuction for a given source and destination alphabets */
+export function encoder(srcAlphabet: string, dstAlphabet: string): (src: string) => string {
+	return function (_src: string) {
+		return encode(srcAlphabet, dstAlphabet, _src);
+	}
 }
 
 /**

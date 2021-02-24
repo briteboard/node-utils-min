@@ -24,7 +24,7 @@
 
 	"include": [
 		"../src/**/*.ts",
-		"./**/*.ts", "spec/type-fix.ts"
+		"./**/*.ts"
 	],
 
 	"exclude": [

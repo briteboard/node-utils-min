@@ -18,6 +18,9 @@ Overview:
 - `split(string, delim?)` Splits (default ','), trim items and filter out empty ones.
 - `asArr(val | vals[])` Returns [val] if val, or vals[] if already array. null/undefined passthrough.
 - `equal` fast strict and deep equal function for object, map, set, date, regex, and primitive types.
+- `shortUuid` shorten a UUID to a base 58 format (bitcoin alphabet)
+- `toUuid` from base 58 to uuid format. 
+- `encoder` create a `encode(src: string)` function from a source and destitation alphabets.
 - All functions are [nullipotent](https://en.wiktionary.org/wiki/nullipotent) argument wise, except for `pruneIn`.
 - All functions are null-passthrough, meaning if null or undefined is passed it returns the value passed.
   - null-passthrough is accordingly typed in TS with conditional typing when needed.
@@ -157,6 +160,14 @@ deepClone('hello'); // 'hello'
 
 await wait(1000); // resolve in 1000 ms (wrap setTimeout as promise)
 
+shortUuid('2ab0968f-b122-4342-aa84-9a216dbfc6ff');
+//returns '6GkPTNGKjCKKsmYrhw1imc'
+toUuid('6GkPTNGKjCKKsmYrhw1imc');
+//     '2ab0968f-b122-4342-aa84-9a216dbfc6ff'
+
+const hex_to_b58 = encoder(BASE_16_ALPHABET, BASE_58_ALPHABET); // not lowercase base_16 alphabet
+const b58 = hex_to_b58('2ce109e9d0faf820b2434e166297934e6177b65ab9951dbc3e204cad4689b39c');
+// returns             '42BxvCVVLLY1UK1TnyDQwwfgvkc7Lw4uwDUZ9eCtfZuM'
 
 // pruneIn: IN PLACE pruning of properties with undefined value 
 // (not necessarely faster than the nillipotent prune() version, especially for object)
