@@ -1,5 +1,6 @@
-require: ts-node/register
+# require: ts-node/register
 spec: test/spec/*.spec.ts
+loader: ts-node/esm
 extensions: ts
 watch-extensions: ts
 watch-files:

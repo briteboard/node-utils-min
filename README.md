@@ -3,7 +3,7 @@ Minimalistic utilities for modern ES / TypeScript coding (assumes es2018 and abo
 
 Priorities: 
 
-- Designed for modern JS/ES/TS programing ONLY, i.e. nodejs 12+ & modern browsers (post IE era)
+- Designed for modern JS/ES/TS programing ONLY, i.e. nodejs 16+ & modern browsers (post IE era)
 - Carefully Typed (i.e., Built for and with TypeScript)
 - Zero dependencies
 

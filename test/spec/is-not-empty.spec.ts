@@ -1,5 +1,5 @@
 import { fail } from 'assert';
-import { isNotEmpty } from '../../src';
+import { isNotEmpty } from '../../src/index.js';
 
 const nan = parseInt('not-a-number');
 

@@ -1,5 +1,5 @@
 import { performance, PerformanceObserver } from 'perf_hooks';
-import { asNum, prune, pruneIn } from '../src';
+import { asNum, prune, pruneIn } from '../src/index.js';
 const summer = (accumulator: number, currentValue: number) => accumulator + currentValue;
 
 /**

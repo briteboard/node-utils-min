@@ -1,7 +1,7 @@
 import { deepStrictEqual as equal } from 'assert';
 import crypto from 'crypto';
 import { v4 as uuidv4 } from 'uuid';
-import { BASE_10_ALPHABET, BASE_16_ALPHABET, BASE_58_ALPHABET, encoder, shortUuid, toUuid } from '../../src';
+import { BASE_10_ALPHABET, BASE_16_ALPHABET, BASE_58_ALPHABET, encoder, shortUuid, toUuid } from '../../src/index.js';
 
 describe('encoder', async function () {
 

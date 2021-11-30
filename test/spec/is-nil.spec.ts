@@ -1,5 +1,5 @@
 import { deepStrictEqual as equal } from 'assert';
-import { isNil } from '../../src';
+import { isNil } from '../../src/index.js';
 
 const nan = parseInt('not-a-number');
 
