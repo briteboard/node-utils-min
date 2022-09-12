@@ -368,8 +368,10 @@ export function equal(a: any, b: any) {
 
 //#region    ---------- deepClone ---------- 
 /**
- * Simple deep clone function for cloning array and object. 
+ * Basic deep clone function for cloning 'data' object such as, array, object, and Date. Not for Map/Set.
+ * 
  * For advanced cloning support, such as prototype, Map/Set, class support, see other cloning library from lodash, underscore, or deepMerge. 
+ * 
  * @param target Target value to be copied.
  * @see source project, ts-deepcopy https://github.com/ykdr2017/ts-deepcopy
  */
@@ -396,6 +398,43 @@ export function deepClone<T>(target: T): T {
 };
 //#endregion ---------- /deepClone ---------- 
 
+
+// #region    --- deepFreeze
+
+/**
+ * Very basic deep freeze function for 'data' objects and arrays.
+ * 
+ * Few important assumptions are made: 
+ * 
+ * - Does not freeze properties of already frozen object. It's the correct assumption
+ *   99.99% of the case, but important to know.
+ * 
+ * - No cyclic reference handling. Use this function with simple tree like data object. 
+ * 
+ * For advanced immutability support, use immutable libraries such as immer.
+ * 
+ * @param target Target value to be copied.
+ * @see source project, ts-deepcopy https://github.com/ykdr2017/ts-deepcopy
+ */
+export function deepFreeze<T>(obj: T): T {
+	if (Object.isFrozen(obj)) return obj;
+
+	// Retrieve the property names defined on object
+	const propNames = Object.getOwnPropertyNames(obj);
+
+	// Freeze properties before freezing self
+
+	for (const name of propNames) {
+		const value = (<any>obj)[name];
+
+		if (value != null && typeof value === "object") {
+			deepFreeze(value);
+		}
+	}
+
+	return Object.freeze(obj);
+}
+// #endregion --- deepFreeze
 
 //#region    ---------- wait ---------- 
 export async function wait(ms: number) {
