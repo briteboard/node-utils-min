@@ -1,7 +1,7 @@
 {
   "name": "utils-min",
   "type": "module",
-  "version": "0.2.1-SNAPSHOT",
+  "version": "0.2.1",
   "description": "Minimalistic utilities for modern ES with TypeScript",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
