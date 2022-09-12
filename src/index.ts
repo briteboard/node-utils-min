@@ -109,7 +109,9 @@ function _prune<T extends undefined | null | object | Array<any>>(obj: T, is: (v
 	if (obj instanceof Array) {
 		return obj.filter(v => !(is(v) || excludeValSet?.has(v)))
 	} else {
-		const prunedObj: Partial<T> = {};
+		// Should be Partial<T>, but TS does not like it. (any for now)
+		// TODO: Needs to check if we can better type this.
+		const prunedObj: any = {};
 
 		for (const k in obj) {
 			if (obj.hasOwnProperty(k)) {
@@ -120,7 +122,7 @@ function _prune<T extends undefined | null | object | Array<any>>(obj: T, is: (v
 			}
 
 		}
-		return prunedObj;
+		return prunedObj as Partial<T>;
 	}
 
 }
@@ -383,7 +385,7 @@ export function deepClone<T>(target: T): T {
 		(target as any[]).forEach((v) => { cp.push(v); });
 		return cp.map((n: any) => deepClone<any>(n)) as any;
 	}
-	if (typeof target === 'object' && target !== {}) {
+	if (typeof target === 'object') {
 		const cp = { ...(target as { [key: string]: any }) } as { [key: string]: any };
 		Object.keys(cp).forEach(k => {
 			cp[k] = deepClone<any>(cp[k]);
