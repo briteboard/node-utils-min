@@ -1,41 +1,58 @@
 
-Minimalistic utilities for modern ES / TypeScript coding (assumes es2018 and above)
+Minimalistic utilities for modern ES/TypeScript coding (assuming es2018 and above, and ESM)
 
-Priorities: 
+Priorities:
 
-- Designed for modern JS/ES/TS programing ONLY, i.e. nodejs 16+ & modern browsers (post IE era)
-- Carefully Typed (i.e., Built for and with TypeScript)
-- Zero dependencies
+- Exclusively designed for modern JS/ES/TS programming, i.e., Node.js 16+ and modern browsers (post-IE era).
+- Carefully typed (built for and with TypeScript).
+- Zero dependencies.
 
+Overview:
 
-Overview: 
+- `Nil` for `null | undefined | NaN`.
+- `prune`, `pruneNil`, `pruneEmpty` to remove properties by value (returns a new object, only direct properties).
+- `omit` to remove properties by name (returns a new object, only direct properties).
+- `pick(obj, ...props)` to select properties by name, returns a new object.
+- `pruneIn` to remove properties with undefined in place (no clone).
+- `spltest(string, delim?)` to split (default ','), trim items, and filter out empty ones.
+- `asArr(val | vals[])` returns [val] if single value, or vals[] if already an array. Null/undefined pass through.
+- `equal` a fast, strict, and deep equality function for objects, maps, sets, dates, regexes, and primitive types.
+- `shortUuid` to shorten a UUID to a base 58 format (bitcoin alphabet).
+- `toUuid` to convert from base 58 to UUID format.
+- `encoder` to create an `encode(src: string)` function from source and destination alphabets.
+- All functions are [nullipotent](https://en.wiktionary.org/wiki/nullipotent) regarding arguments, except `pruneIn`.
+- All functions allow null pass-through, meaning if null or undefined is passed, it returns the value passed.
+  - Null pass-through is appropriately typed in TS with conditional typing when needed.
 
-- `Nil` for `null | undefined | NaN`
-- `prune`, `pruneNil`, `pruneEmpty` Removes properties by value (new object returned, direct properties only)
-- `omit` Removes properties by name (new object returned, direct properties only)
-- `pick(obj, ...props)` Pick properties by name returns new object
-- `pruneIn` Removes properties with undefined in place (no clone)
-- `split(string, delim?)` Splits (default ','), trim items and filter out empty ones.
-- `asArr(val | vals[])` Returns [val] if val, or vals[] if already array. null/undefined passthrough.
-- `equal` fast strict and deep equal function for object, map, set, date, regex, and primitive types.
-- `shortUuid` shorten a UUID to a base 58 format (bitcoin alphabet)
-- `toUuid` from base 58 to uuid format. 
-- `encoder` create a `encode(src: string)` function from a source and destitation alphabets.
-- All functions are [nullipotent](https://en.wiktionary.org/wiki/nullipotent) argument wise, except for `pruneIn`.
-- All functions are null-passthrough, meaning if null or undefined is passed it returns the value passed.
-  - null-passthrough is accordingly typed in TS with conditional typing when needed.
-
-
-
-Roadmap: 
-- `omitIn(obj, ...props)` Omit in place (not sure we need/want this one).
-- `asBool(val | vals[])` Returns true: 'true' | >0, false: 'false' | <=0 | null | undefined | NaN
-- (only if requested) `deepPrune...` `deepOmit`
+Roadmap:
+- `omitIn(obj, ...props)` to omit in place (not sure we need/want this one).
+- `asBool(val | vals[])` to return true for 'true' or >0, false for 'false', <=0, null, undefined, or NaN.
+- (only if requested) `deepPrune...`, `deepOmit`.
 
 
 ```sh
 npm install utils-min
+# or 
+bun add utils-min
 ```
+
+## Dev
+
+This lib can be used with `nodejs` and `bunjs` for both server and browser. 
+
+However, lib uses `bunjs` for development. Build and test and all. 
+
+```sh
+# Test
+bun test
+# Watch Test
+bun --watch test
+
+# To build the dist/
+# Note: just uses typecript compiler (no need for anything else)
+bun run build
+```
+
 
 ## Overview
 
@@ -109,16 +126,16 @@ pruneEmpty([undefined, null, 0, [], '']); // [0]
 pruneEmpty([undefined, null, 123, [], ''], 123); // [] (additional exclude 123)
 
 // omit: return new object without some of properties (returned type Omit<T, K extends Extract<keyof T, string>>)
-omit({a: 1, b: 'BBB', c: 'CCC'}, 'b', 'c'); // {a: 1}
-omit({a: 1, b: 'BBB', c: 'CCC', d: null, e: undefined}, 'b', 'c'); // {a: 1, d: null, e: undefined}
+omtest({a: 1, b: 'BBB', c: 'CCC'}, 'b', 'c'); // {a: 1}
+omtest({a: 1, b: 'BBB', c: 'CCC', d: null, e: undefined}, 'b', 'c'); // {a: 1, d: null, e: undefined}
 
 // pick: return new object 
 pick({a: 1, b: 'BBB', c: 'CCC'}, 'b', 'c'); // {b: 'BBB', c: 'CCC'}
 
 // split: split, trim, and remove empty items (default delim ',')
-split('1 ,2, 3'); // ['1', '2', '3']
-split('1 ,2,, \t,\n 3,,'); // ['1', '2', '3']
-split('1 ;2, 3', ';'); // ['1', '2, 3'] (with custom delim ;)
+spltest('1 ,2, 3'); // ['1', '2', '3']
+spltest('1 ,2,, \t,\n 3,,'); // ['1', '2', '3']
+spltest('1 ;2, 3', ';'); // ['1', '2, 3'] (with custom delim ;)
 
 // asNum: use Number to parse, but return null for empty strings and support array.
 asNum('12.5'); // 12.5
@@ -158,7 +175,7 @@ deepClone(null); // null
 deepClone('hello'); // 'hello'
 
 
-await wait(1000); // resolve in 1000 ms (wrap setTimeout as promise)
+await watest(1000); // resolve in 1000 ms (wrap setTimeout as promise)
 
 shortUuid('2ab0968f-b122-4342-aa84-9a216dbfc6ff');
 //returns '6GkPTNGKjCKKsmYrhw1imc'

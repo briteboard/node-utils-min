@@ -1,4 +1,5 @@
 import { deepStrictEqual as equal } from 'assert';
+import { describe, test } from "bun:test";
 import { isString } from '../../src/index.js';
 
 const nan = parseInt('not-a-number');
@@ -7,31 +8,31 @@ const str: any = 'hello';
 
 describe('is-string', async function () {
 
-	it('is-string-undefined', async () => {
+	test('is-string-undefined', async () => {
 		equal(isString(undefined), false);
 	});
 
-	it('is-string-null', async () => {
+	test('is-string-null', async () => {
 		equal(isString(null), false);
 	});
 
-	it('is-string-nan', async () => {
+	test('is-string-nan', async () => {
 		equal(isString(nan), false);
 	});
 
-	it('is-string-num', async () => {
+	test('is-string-num', async () => {
 		equal(isString(0), false);
 		equal(isString(-1), false);
 		equal(isString(123), false);
 	});
 
-	it('is-string-[]', async () => {
+	test('is-string-[]', async () => {
 		equal(isString([]), false);
 		equal(isString([undefined]), false);
 		equal(isString([null]), false);
 	});
 
-	it('is-string-string', async () => {
+	test('is-string-string', async () => {
 		equal(isString(''), true);
 		equal(isString('hello'), true);
 
@@ -41,7 +42,7 @@ describe('is-string', async function () {
 		}
 	});
 
-	it('is-string-object', async () => {
+	test('is-string-object', async () => {
 		equal(isString({}), false);
 		equal(isString({ a: 123 }), false);
 	});

@@ -22,7 +22,7 @@
 
 		"declaration": true,
 
-		"sourceMap": false,  // we do not need the sourcemap (for /scripts/*.ts)		
+		"sourceMap": true,  // we do not need the sourcemap (for /scripts/*.ts)		
 
 		// Since we are using ts-node, not really needed, but just in case we want to do a "tsc" on folder.
 		"outDir": "./dist/", /* Redirect output structure to the directory. */
@@ -30,9 +30,11 @@
 		"baseUrl": ".",
 		
 		"experimentalDecorators": true,
+
+		"skipLibCheck": true,
 				
 		// Needed to call import default (replaces allowSyntheticDefaultImports)
-		"esModuleInterop": true
+		"esModuleInterop": true	
 	},
 
 	// We want more control about which code we will compile and exclude

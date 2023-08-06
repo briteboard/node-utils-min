@@ -1,23 +1,24 @@
 import { deepStrictEqual as nodeEqual } from 'assert';
+import { describe, test } from "bun:test";
 import { equal } from '../../src/index.js';
 
 const nan = parseInt('not-a-number');
 
 describe('equal', async function () {
 
-	it('equal-undefined', async () => {
+	test('equal-undefined', async () => {
 		nodeEqual(equal(undefined, undefined), true);
 		nodeEqual(equal(undefined, 2), false);
 	});
 
 
-	it('equal-null', async () => {
+	test('equal-null', async () => {
 		nodeEqual(equal(null, null), true);
 		nodeEqual(equal(null, 1), false);
 		nodeEqual(equal(undefined, null), false);
 	});
 
-	it('equal-array', async () => {
+	test('equal-array', async () => {
 		nodeEqual(equal([1, 2], [1, 2]), true);
 		nodeEqual(equal([1, { two: 2 }], [1, { two: 2 }]), true);
 		nodeEqual(equal([1, { two: 2 }], [1, { two: 3 }]), false);
@@ -27,7 +28,7 @@ describe('equal', async function () {
 		nodeEqual(equal([1, 2, 3], 'aa'), false);
 	});
 
-	it('equal-object', async () => {
+	test('equal-object', async () => {
 		nodeEqual(equal({ a: 1, b: 2 }, { b: 2, a: 1 }), true);
 		nodeEqual(equal({ a: 1, b: 2 }, { a: 1 }), false);
 		nodeEqual(equal(null, { a: 1 }), false);
@@ -37,7 +38,7 @@ describe('equal', async function () {
 		nodeEqual(equal(m, { a: 1 }), false);
 	});
 
-	it('equal-map', async () => {
+	test('equal-map', async () => {
 		const m1 = new Map();
 		m1.set('a', 1);
 		m1.set('b', 2);
@@ -54,7 +55,7 @@ describe('equal', async function () {
 		nodeEqual(equal(m2, { a: 1 }), false);
 	});
 
-	it('equal-set', async () => {
+	test('equal-set', async () => {
 		const s1 = new Set();
 		s1.add('a');
 		s1.add('b');

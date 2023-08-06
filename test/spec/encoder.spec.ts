@@ -1,11 +1,12 @@
 import { deepStrictEqual as equal } from 'assert';
+import { describe, test } from "bun:test";
 import crypto from 'crypto';
 import { v4 as uuidv4 } from 'uuid';
 import { BASE_10_ALPHABET, BASE_16_ALPHABET, BASE_58_ALPHABET, encoder, shortUuid, toUuid } from '../../src/index.js';
 
 describe('encoder', async function () {
 
-	it('encoder-base-10-to-58', async () => {
+	test('encoder-base-10-to-58', async () => {
 
 		const num = 9912992344;
 		const dec2hexEncode = encoder(BASE_10_ALPHABET, BASE_58_ALPHABET);
@@ -17,10 +18,10 @@ describe('encoder', async function () {
 		equal(revert, '' + num);
 	});
 
-	it('encoder-base-16-to-58', async () => {
+	test('encoder-base-16-to-58', async () => {
 		function hexToBytes(hex: string) {
-			for (var bytes = [], c = 0; c < hex.length; c += 2)
-				bytes.push(parseInt(hex.substr(c, 2), 16));
+			for (var bytes: number[] = [], c = 0; c < hex.length; c += 2)
+				bytes.push(parseInt(hex.substring(c, 2), 16));
 			return bytes;
 		}
 
@@ -34,7 +35,7 @@ describe('encoder', async function () {
 	});
 
 
-	it('encoder-uuid', async () => {
+	test('encoder-uuid', async () => {
 
 		let count = 10;
 

@@ -1,8 +1,9 @@
 # By Default, Ignore any .  Mac stuff
 .*
-
 # Except .gitgnore
 !.gitignore
+
+*.lockb
 
 # Allow vscode 
 !.vscode

@@ -1,28 +1,29 @@
 import { deepStrictEqual as nodeEqual, notDeepStrictEqual as nodeNotEqual } from 'assert';
+import { describe, test } from "bun:test";
 import { deepClone } from '../../src/index.js';
 
 const nan = parseInt('not-a-number');
 
 describe('deep-clone', async function () {
 
-	it('deep-clone-undefined', async () => {
+	test('deep-clone-undefined', async () => {
 		nodeEqual(deepClone(undefined), undefined);
 	});
 
 
-	it('deep-clone-null', async () => {
+	test('deep-clone-null', async () => {
 		nodeEqual(deepClone(null), null);
 	});
 
-	it('deep-clone-string', async () => {
+	test('deep-clone-string', async () => {
 		nodeEqual(deepClone('hello'), 'hello');
 	});
 
-	it('deep-clone-number', async () => {
+	test('deep-clone-number', async () => {
 		nodeEqual(deepClone(1.4), 1.4);
 	});
 
-	it('deep-clone-array', async () => {
+	test('deep-clone-array', async () => {
 		const a1 = [1, 2];
 		nodeEqual(deepClone(a1), a1);
 
@@ -31,7 +32,7 @@ describe('deep-clone', async function () {
 		nodeNotEqual(deepClone(a2), [...a2, { a: 123 }]);
 	});
 
-	it('deep-clone-object', async () => {
+	test('deep-clone-object', async () => {
 		const o1 = { a: 1, b: 2 }
 		nodeEqual(deepClone(o1), o1);
 		nodeEqual(deepClone(o1), { a: 1, b: 2 });

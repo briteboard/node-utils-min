@@ -1,7 +1,7 @@
 {
   "name": "utils-min",
   "type": "module",
-  "version": "0.2.2-WIP",
+  "version": "0.2.3",
   "description": "Minimalistic utilities for modern ES with TypeScript",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -10,24 +10,22 @@
     "url": "https://github.com/briteboard/node-utils-min.git"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha",
-    "testw": "TS_NODE_FILES=true ./node_modules/.bin/mocha ./test/spec/*.spec.ts --watch --watch-files './test/**/*.ts','./src/**/*.ts'",
-    "bench": "./node_modules/.bin/tsnd --respawn test/bench.ts",
+    "build": "./node_modules/.bin/tsc",
     "prepare": "node_modules/.bin/rimraf ./dist && ./node_modules/.bin/tsc"
   },
   "author": "jeremy.chone@gmail.com",
   "license": "MIT",
   "devDependencies": {
-    "@types/mocha": "^10.0.1",
-    "@types/node": "^20.4.8",
+    "@types/bun": "^1.0.0",
     "@types/uuid": "^9.0.2",
-    "mocha": "^10.2.0",
     "rimraf": "^5.0.1",
-    "ts-node": "^10.9.1",
     "typescript": "^5.1.6",
     "uuid": "^9.0.0"
   },
+  
   "files": [
+    "LICENSE",
+    "README.md",
     "src/",
     "dist/"
   ]

@@ -1,16 +1,17 @@
 import { deepStrictEqual as equal } from 'assert';
+import { describe, test } from "bun:test";
 import { pick } from '../../src/index.js';
 
 const nan = parseInt('not-a-number');
 
 describe('pick', async function () {
 
-	it('pick-null', async () => {
+	test('pick-null', async () => {
 		const p = pick(null);
 		equal(p, null);
 	});
 
-	it('pick-any', async () => {
+	test('pick-any', async () => {
 		const data = { a: 123, b: 124, c: 'one' };
 		const p = pick(data, 'a', 'b');
 		equal(p, { a: 123, b: 124 });
@@ -20,7 +21,7 @@ describe('pick', async function () {
 
 	});
 
-	it('pick-with-undefined', async () => {
+	test('pick-with-undefined', async () => {
 		const data: any = { a: 123 };
 		const p = pick(data, 'a', 'b');
 		equal(p, { a: 123 });

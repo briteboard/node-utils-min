@@ -1,4 +1,5 @@
 import { deepStrictEqual as equal } from 'assert';
+import { describe, test } from "bun:test";
 import { deepFreeze } from '../../src/index.js';
 import { should_throw } from './utils.js';
 
@@ -6,7 +7,7 @@ const nan = parseInt('not-a-number');
 
 describe('deep-freeze', async function () {
 
-	it('deep-freeze-object-flat', () => {
+	test('deep-freeze-object-flat', () => {
 		const obj = { a: 1, b: "32" };
 
 		deepFreeze(obj);
@@ -17,7 +18,7 @@ describe('deep-freeze', async function () {
 		});
 	});
 
-	it('deep-freeze-object-nested', () => {
+	test('deep-freeze-object-nested', () => {
 		const obj = { a: 1, b: "32", c: { x: 33, y: 44 } };
 
 		deepFreeze(obj);
@@ -29,7 +30,7 @@ describe('deep-freeze', async function () {
 		});
 	});
 
-	it('deep-freeze-array-strings', () => {
+	test('deep-freeze-array-strings', () => {
 		const obj = { a: 1, b: "32", c: ["a", "b"] };
 
 		deepFreeze(obj);
@@ -41,7 +42,7 @@ describe('deep-freeze', async function () {
 		});
 	});
 
-	it('deep-freeze-array-objects', () => {
+	test('deep-freeze-array-objects', () => {
 		const obj = { a: 1, b: null, c: ["a", { d: { e: 1, f: 2 } }] };
 
 		deepFreeze(obj);
@@ -54,14 +55,14 @@ describe('deep-freeze', async function () {
 	});
 
 
-	it('deep-freeze-number', () => {
+	test('deep-freeze-number', () => {
 		const obj = 123;
 
 		deepFreeze(obj);
 		equal(obj, 123);
 	});
 
-	it('deep-freeze-null', () => {
+	test('deep-freeze-null', () => {
 		const obj = null;
 
 		deepFreeze(obj);
