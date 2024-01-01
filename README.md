@@ -54,7 +54,7 @@ bun run build
 ```
 
 
-## Overview
+## API
 
 
 ```ts
